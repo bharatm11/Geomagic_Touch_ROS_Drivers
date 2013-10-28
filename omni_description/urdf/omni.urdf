@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="phantom_omni" xmlns:xacro="http://www.ros.org/wiki/xacro">
+	
+	<!-- Materials -->
+	<material name="metal_seamed">
+		<color rgba="0.4627450980392157 0.4666666666666667 0.4509803921568628 1.0" />
+	</material>
+	<material name="blue">
+		<color rgba="0.0 0.0 0.8 1.0" />
+	</material>
+	<material name="white">
+		<color rgba="1.0 1.0 1.0 1.0" />
+	</material>
+	
+	<!-- Links -->
+  <link name="base" >
+    <visual>
+			<origin xyz="0 -0.02 0" />
+      <geometry>
+				<mesh filename="package://omni_description/meshes/base.stl" />
+      </geometry>
+      <material name="metal_seamed"/>
+    </visual>
+  </link>
+  <link name="torso" >
+    <visual>
+			<origin xyz="0 0 0.036" rpy="-1.5707 0 0"/>
+      <geometry>
+				<mesh filename="package://omni_description/meshes/torso.stl" />
+      </geometry>
+      <material name="blue"/>
+    </visual>
+  </link>
+  <link name="upper_arm" >
+		<visual>
+			<origin xyz="0.0075 0 0" rpy="0 0 0"/>
+      <geometry>
+				<mesh filename="package://omni_description/meshes/upper_arm.stl" />
+      </geometry>
+      <material name="metal_seamed" />
+    </visual>
+  </link>
+  <link name="lower_arm" >
+		<visual>
+			<origin xyz="0 0 0" rpy="1.5707 0 0"/>
+      <geometry>
+				<mesh filename="package://omni_description/meshes/lower_arm.stl" />
+      </geometry>
+      <material name="metal_seamed" />
+    </visual>
+  </link>
+  <link name="wrist" >
+		<visual>
+			<origin xyz="0 0 0" rpy="3.14159 0 0"/>
+      <geometry>
+				<mesh filename="package://omni_description/meshes/wrist.stl" />
+      </geometry>
+      <material name="metal_seamed" />
+    </visual>
+  </link>
+  <link name="tip" >
+		<visual>
+			<origin xyz="0 0 0" rpy="-1.5707 0 0"/>
+      <geometry>
+				<mesh filename="package://omni_description/meshes/tip.stl" />
+      </geometry>
+      <material name="metal_seamed" />
+    </visual>
+  </link>
+  <link name="stylus" >
+    <visual>
+			<origin xyz="0 -0.033 0" rpy="1.5707 1.5707 0"/>
+      <geometry>
+				<mesh filename="package://omni_description/meshes/pen.stl" />
+      </geometry>
+      <material name="blue" />
+    </visual>
+  </link>
+  
+	<!-- joints -->
+  <joint name="waist" type="revolute" >
+    <parent link="base" />
+    <child link="torso" />
+    <origin xyz="0 0 0.09" rpy="0 0 0" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.98" upper="0.98" velocity="100" effort="5" />
+  </joint>
+  <joint name="shoulder" type="revolute" >
+    <parent link="torso" />
+    <child link="upper_arm" />
+    <origin xyz="-0.0075 0 0.035" rpy="0 0 0" />
+    <axis xyz="1 0 0" />
+    <limit lower="0" upper="1.75" velocity="100" effort="5" />
+  </joint>
+  <joint name="elbow" type="revolute" >
+    <parent link="upper_arm" />
+    <child link="lower_arm" />
+    <origin xyz="0.0075 .134 0" rpy="-1.5 0 0" />
+    <axis xyz="1 0 0" />
+		<!-- upper="1.25" -->
+    <limit lower="-0.81" upper="1.25" velocity="100" effort="5" /> 
+  </joint>
+  <joint name="yaw" type="revolute" >
+    <parent link="lower_arm" />
+    <child link="wrist" />
+    <origin xyz="0 0.08 0" />
+    <axis xyz="0 1 0" />
+    <limit lower="3.92" upper="8.83" velocity="100" effort="5" />
+  </joint>
+  <joint name="pitch" type="revolute" >
+    <parent link="wrist" />
+    <child link="tip" />
+    <origin xyz="0 0.0525 0" rpy="0.5 0 0" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.5" upper="1.75" velocity="100" effort="5" />
+  </joint>
+  <joint name="roll" type="revolute" >
+    <parent link="tip" />
+    <child link="stylus" />
+    <origin xyz="0 -0.023 0" rpy="3.14159 3.14159 0" />
+    <axis xyz="0 1 0" />
+    <limit lower="-2.58" upper="2.58" velocity="100" effort="5" />
+  </joint>
+</robot>
+

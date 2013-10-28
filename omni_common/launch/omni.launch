@@ -1,0 +1,7 @@
+<launch>
+        <param name="robot_description" command="cat $(find omni_description)/urdf/omni.urdf" />
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+        <node name="omni1" pkg="omni_common" type="omni" output="screen" />
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find omni_common)/launch/omni.rviz" required="true" />
+</launch>
+
