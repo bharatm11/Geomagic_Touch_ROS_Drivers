@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(omni_common)
 
-find_package(catkin REQUIRED COMPONENTS roscpp telerob_msgs std_msgs geometry_msgs rosconsole tf sensor_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp omni_msgs std_msgs geometry_msgs rosconsole tf sensor_msgs)
 
 catkin_package(DEPENDS roscpp omni_msgs std_msgs geometry_msgs rosconsole tf sensor_msgs)
 
