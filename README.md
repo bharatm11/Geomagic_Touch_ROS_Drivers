@@ -7,14 +7,19 @@ ROS packages developed by the [Group of Robots and Intelligent Machines](http://
 
 **Maintainer:** Francisco Suárez Ruiz, [http://www.romin.upm.es/fsuarez/](http://www.romin.upm.es/fsuarez/)
 
----
-# Documentation
+
+## Documentation
 * See the installation instructions below.
 * This repository.
 * Throughout the various files in the packages.
 * For questions, please use [http://answers.ros.org](http://answers.ros.org)
----
-# Installation
+
+### Build Status
+
+TODO
+
+
+## Installation
 
 Go to your ROS working directory. e.g.
 ```
@@ -36,7 +41,7 @@ After installing the missing dependencies compile your ROS workspace. e.g.
 cd ~/catkin_ws && catkin_make
 ``` 
 
-## Testing Installation
+### Testing Installation
 
 Be sure to always source the appropriate ROS setup file, which for Hydro is done like so:
 ```
@@ -49,15 +54,15 @@ Try any of the `.launch` files in the `grips_gazebo` package: (e.g. `cordless_dr
 roslaunch omni_common omni.launch
 ``` 
 
----
-# Changelog
+
+## Changelog
 ### 0.1.0 (2013-10-28)
 * Initial Release
 
----
-# Roadmap
+
+## Roadmap
 TODO
 
----
-# Tutorials
+
+## Tutorials
 TODO
