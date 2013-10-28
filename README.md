@@ -14,10 +14,6 @@ ROS packages developed by the [Group of Robots and Intelligent Machines](http://
 * Throughout the various files in the packages.
 * For questions, please use [http://answers.ros.org](http://answers.ros.org)
 
-### Build Status
-
-TODO
-
 
 ## Installation
 
