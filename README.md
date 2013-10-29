@@ -7,13 +7,13 @@ ROS packages developed by the [Group of Robots and Intelligent Machines](http://
 
 **Maintainer:** Francisco Suárez Ruiz, [http://www.romin.upm.es/fsuarez/](http://www.romin.upm.es/fsuarez/)
 
+<img align="right" src="https://raw.github.com/fsuarez6/phantom_omni/hydro-devel/omni_description/resources/OmniRviz.png" />
 
 ## Documentation
 * See the installation instructions below.
 * This repository.
 * Throughout the various files in the packages.
 * For questions, please use [http://answers.ros.org](http://answers.ros.org)
-
 
 ## Installation
 
@@ -45,7 +45,7 @@ source /opt/ros/hydro/setup.bash
 ``` 
 You might want to add that line to your `~/.bashrc`
 
-Try any of the `.launch` files in the `grips_gazebo` package: (e.g. `cordless_drill.launch`)
+Try the `omni.launch` file in the `omni_common` package:
 ```
 roslaunch omni_common omni.launch
 ``` 
