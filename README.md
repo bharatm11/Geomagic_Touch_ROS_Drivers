@@ -62,3 +62,5 @@ TODO
 
 ## Tutorials
 TODO
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/fsuarez6/phantom_omni/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
