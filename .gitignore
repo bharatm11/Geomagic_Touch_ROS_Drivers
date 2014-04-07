@@ -3,6 +3,13 @@
 *.lo
 *.o
 
+# Kernel Objects
+*.ko
+*.mod*
+*.cmd
+*.symvers
+*.order
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
