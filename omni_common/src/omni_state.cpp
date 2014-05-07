@@ -17,6 +17,8 @@
 #include <HDU/hduVector.h>
 #include <HDU/hduMatrix.h>
 #include <HDU/hduQuaternion.h>
+#define BT_EULER_DEFAULT_ZYX
+#include <bullet/LinearMath/btMatrix3x3.h>
 
 #include "omni_msgs/OmniButtonEvent.h"
 #include "omni_msgs/OmniFeedback.h"
@@ -156,7 +158,7 @@ public:
     state_msg.pose.orientation.x = state->rot.v()[0];
     state_msg.pose.orientation.y = state->rot.v()[1];
     state_msg.pose.orientation.z = state->rot.v()[2];
-    state_msg.pose.orientation.w = state->rot.s();    
+    state_msg.pose.orientation.w = state->rot.s();
     // Velocity
     state_msg.velocity.x = state->velocity[0];
     state_msg.velocity.y = state->velocity[1];
@@ -203,13 +205,24 @@ HDCallbackCode HDCALLBACK omni_state_callback(void *pUserData)
   hduMatrix transform;
   hdGetDoublev(HD_CURRENT_TRANSFORM, transform);
   hdGetDoublev(HD_CURRENT_JOINT_ANGLES, omni_state->joints);
+  // Notice that we are inverting the Z-position value and changing Y <---> Z
   // Position
-  omni_state->position = hduVector3Dd(transform[3][0], transform[3][1], transform[3][2]);
+  omni_state->position = hduVector3Dd(transform[3][0], -transform[3][2], transform[3][1]);
   omni_state->position /= omni_state->units_ratio;
   // Orientation (quaternion)
-  hduMatrix rot_mat(transform);
-  rot_mat.getRotationMatrix(rot_mat);
-  omni_state->rot = hduQuaternion(rot_mat);
+  hduMatrix mat_real_hdu(transform);
+  mat_real_hdu.getRotationMatrix(mat_real_hdu);
+  hduQuaternion q_real_hdu(mat_real_hdu);
+  btMatrix3x3 mat_real_bt(btQuaternion(q_real_hdu.v()[0], q_real_hdu.v()[1], q_real_hdu.v()[2], q_real_hdu.s()));
+  float roll, pitch, yaw;
+  mat_real_bt.getEulerYPR(yaw, pitch, roll);
+  btQuaternion q_changed_bt(pitch, yaw, roll);
+  double q_changed[4];
+  q_changed[0] = (double) q_changed_bt.w();
+  q_changed[1] = (double) q_changed_bt.x();
+  q_changed[2] = (double) q_changed_bt.y();
+  q_changed[3] = (double) q_changed_bt.z();
+  omni_state->rot = hduQuaternion(q_changed);
   // Velocity estimation
   hduVector3Dd vel_buff(0, 0, 0);
   vel_buff = (omni_state->position * 3 - 4 * omni_state->pos_hist1
@@ -232,7 +245,12 @@ HDCallbackCode HDCALLBACK omni_state_callback(void *pUserData)
     omni_state->force = 0.04 * omni_state->units_ratio * (omni_state->lock_pos - omni_state->position)
         - 0.001 * omni_state->velocity;
   }
-  hdSetDoublev(HD_CURRENT_FORCE, omni_state->force);
+  hduVector3Dd feedback;
+  // Notice that we are changing Y <---> Z and inverting the Z-force_feedback
+  feedback[0] = omni_state->force[0];
+  feedback[1] = omni_state->force[2];
+  feedback[2] = -omni_state->force[1];
+  hdSetDoublev(HD_CURRENT_FORCE, feedback);
 
   //Get buttons
   int nButtons = 0;
