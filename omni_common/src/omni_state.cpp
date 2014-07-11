@@ -212,17 +212,18 @@ HDCallbackCode HDCALLBACK omni_state_callback(void *pUserData)
   // Orientation (quaternion)
   hduMatrix mat_real_hdu(transform);
   mat_real_hdu.getRotationMatrix(mat_real_hdu);
-  hduQuaternion q_real_hdu(mat_real_hdu);
-  btMatrix3x3 mat_real_bt(btQuaternion(q_real_hdu.v()[0], q_real_hdu.v()[1], q_real_hdu.v()[2], q_real_hdu.s()));
-  float roll, pitch, yaw;
-  mat_real_bt.getEulerYPR(yaw, pitch, roll);
-  btQuaternion q_changed_bt(pitch, yaw, roll);
-  double q_changed[4];
-  q_changed[0] = (double) q_changed_bt.w();
-  q_changed[1] = (double) q_changed_bt.x();
-  q_changed[2] = (double) q_changed_bt.y();
-  q_changed[3] = (double) q_changed_bt.z();
-  omni_state->rot = hduQuaternion(q_changed);
+  //~ hduQuaternion q_real_hdu(mat_real_hdu);
+  //~ btMatrix3x3 mat_real_bt(btQuaternion(q_real_hdu.v()[0], q_real_hdu.v()[1], q_real_hdu.v()[2], q_real_hdu.s()));
+  //~ float roll, pitch, yaw;
+  //~ mat_real_bt.getEulerYPR(yaw, pitch, roll);
+  //~ btQuaternion q_changed_bt(pitch, yaw, roll);
+  //~ double q_changed[4];
+  //~ q_changed[0] = (double) q_changed_bt.w();
+  //~ q_changed[1] = (double) q_changed_bt.x();
+  //~ q_changed[2] = (double) q_changed_bt.y();
+  //~ q_changed[3] = (double) q_changed_bt.z();
+  //~ omni_state->rot = hduQuaternion(q_changed);
+  omni_state->rot = hduQuaternion(mat_real_hdu);
   // Velocity estimation
   hduVector3Dd vel_buff(0, 0, 0);
   vel_buff = (omni_state->position * 3 - 4 * omni_state->pos_hist1
