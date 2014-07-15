@@ -24,7 +24,7 @@ cd ~/catkin_ws/src
 Use the `wstool` to install the repository
 ```
 wstool init .
-wstool merge https://raw.github.com/fsuarez6/phantom_omni/hydro-devel/omni.rosinstall
+wstool merge https://raw.github.com/fsuarez6/phantom_omni/hydro-devel/phantom_omni.rosinstall
 wstool update
 ``` 
 Check for any missing dependencies using rosdep:
