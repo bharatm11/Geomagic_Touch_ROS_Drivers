@@ -17,8 +17,8 @@
 #include <HDU/hduVector.h>
 #include <HDU/hduMatrix.h>
 #include <HDU/hduQuaternion.h>
-#define BT_EULER_DEFAULT_ZYX
-#include <bullet/LinearMath/btMatrix3x3.h>
+//~ #define BT_EULER_DEFAULT_ZYX
+//~ #include <bullet/LinearMath/btMatrix3x3.h>
 
 #include "omni_msgs/OmniButtonEvent.h"
 #include "omni_msgs/OmniFeedback.h"
