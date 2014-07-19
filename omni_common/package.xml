@@ -13,6 +13,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <build_depend>bullet</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>omni_msgs</build_depend>
   <build_depend>sensor_msgs</build_depend>
