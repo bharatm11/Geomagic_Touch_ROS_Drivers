@@ -1,13 +1,13 @@
 <launch>
-	<arg name="reference_frame" default="/map"/>
-	<arg name="units" default="mm"/>
-	<arg name="publish_rate" default="1000"/>
-	<arg name="omni_name" default="phantom"/>
-	
-	<node name="omni_state" pkg="omni_common" type="omni_state" output="screen"> 
-		<param name="omni_name" value="$(arg omni_name)"/>
-		<param name="publish_rate" value="$(arg publish_rate)"/>
-		<param name="reference_frame" value="$(arg reference_frame)"/>
-		<param name="units" value="$(arg units)"/>
-	</node>
+  <arg name="reference_frame" default="/map"/>
+  <arg name="units" default="mm"/>
+  <arg name="publish_rate" default="1000"/>
+  <arg name="omni_name" default="phantom"/>
+  
+  <node name="omni_state" pkg="omni_common" type="omni_state" output="screen"> 
+    <param name="omni_name" value="$(arg omni_name)"/>
+    <param name="publish_rate" value="$(arg publish_rate)"/>
+    <param name="reference_frame" value="$(arg reference_frame)"/>
+    <param name="units" value="$(arg units)"/>
+  </node>
 </launch>
