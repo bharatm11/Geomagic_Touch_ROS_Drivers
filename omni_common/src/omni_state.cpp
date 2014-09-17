@@ -266,11 +266,11 @@ HDCallbackCode HDCALLBACK omni_state_callback(void *pUserData)
   omni_state->out_vel2 = omni_state->out_vel1;
   omni_state->out_vel1 = omni_state->velocity;
   
-  // Set forces if locked
-  if (omni_state->lock == true) {
-    omni_state->force = 0.04 * omni_state->units_ratio * (omni_state->lock_pos - omni_state->position)
-        - 0.001 * omni_state->velocity;
-  }
+  //~ // Set forces if locked
+  //~ if (omni_state->lock == true) {
+    //~ omni_state->force = 0.04 * omni_state->units_ratio * (omni_state->lock_pos - omni_state->position)
+        //~ - 0.001 * omni_state->velocity;
+  //~ }
   hduVector3Dd feedback;
   // Notice that we are changing Y <---> Z and inverting the Z-force_feedback
   feedback[0] = omni_state->force[0];
