@@ -3,7 +3,7 @@ phantom-omni
 
 <img align="right" src="https://raw.github.com/fsuarez6/phantom_omni/hydro-devel/omni_description/resources/OmniRviz.png" />
 
-ROS Packages for Sensable Phantom Omni device. On going development continues in the hydro-devel branch
+ROS Packages for Sensable PHANToM Omni device, **firewire** version. On going development continues in the hydro-devel branch
 
 ROS packages developed by the [Group of Robots and Intelligent Machines](http://www.romin.upm.es/) from the [Universidad Politécnica de Madrid](http://www.upm.es/internacional). This group is part of the [Centre for Automation and Robotics](http://www.car.upm-csic.es/) (CAR UPM-CSIC). On going development continues in the hydro-devel branch.
 
@@ -16,6 +16,21 @@ ROS packages developed by the [Group of Robots and Intelligent Machines](http://
 * For questions, please use [http://answers.ros.org](http://answers.ros.org)
 
 ## Installation
+
+This instructions have been tested with OpenHaptics SDK 3.0 in Ubuntu 12.04, both 32 and 64 bits.
+
+Before going any further please check the following:
+* You have a **firewire** PHANToM Omni NOT the Ethernet one.
+* Your development machine has a **firewire** port. I have tested both Firewire400 and Firewire800 and they work just fine.
+* You understand what a **catkin workspace**, a **symbolic link** and a **git repository** are.
+
+### OpenHaptics SDK
+
+This package requires OpenHaptics SDK. You can get it from (http://dsc.sensable.com/).
+
+### ROS Metapackage
+
+**Note:** This instructions are for **existing** catkin workspaces. To create a catking workspace check [here](http://wiki.ros.org/catkin/Tutorials/create_a_workspace)
 
 Go to your ROS working directory. e.g.
 ```
