@@ -62,6 +62,7 @@ You might want to add that line to your `~/.bashrc`
 
 Try the `omni.launch` file in the `omni_common` package:
 ```
+rosrun omni_common initialize_device.sh -c
 roslaunch omni_common omni.launch
 ``` 
 
