@@ -1,4 +1,4 @@
-3D Systems Geomagic Touch
+3D Systems Geomagic Touch ROS Driver
 ============
 
 ROS Packages for 3D Systems Geomagic Touch haptic device, **USB** version.s
@@ -10,6 +10,3 @@ ROS packages developed by the [Group of Robots and Intelligent Machines](http://
 ## Installation
 
 Check the installation instructions [here](http://fsuarez6.github.io/projects/geomagic-touch-in-ros/).
-# Geomagic_Touch_ROS_Driver
-# Geomagic_Touch_ROS_Drivers
-# Geomagic_Touch_ROS_Drivers
