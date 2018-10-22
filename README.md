@@ -1,20 +1,15 @@
-phantom-omni
+3D Systems Geomagic Touch
 ============
 
-<img align="right" src="https://raw.github.com/fsuarez6/phantom_omni/hydro-devel/omni_description/resources/OmniRviz.png" />
+ROS Packages for 3D Systems Geomagic Touch haptic device, **USB** version.s
 
-ROS Packages for Sensable PHANToM Omni device, **firewire** version. On going development continues in the hydro-devel branch
+This repository has been forked from the original repository by Francisco Suárez Ruiz, [http://fsuarez6.github.io](http://fsuarez6.github.io) for the Sensable PHANToM haptic device (https://github.com/fsuarez6/phantom_omni).
 
-ROS packages developed by the [Group of Robots and Intelligent Machines](http://www.romin.upm.es/) from the [Universidad Politécnica de Madrid](http://www.upm.es/internacional). This group is part of the [Centre for Automation and Robotics](http://www.car.upm-csic.es/) (CAR UPM-CSIC). On going development continues in the hydro-devel branch.
-
-**Maintainer:** Francisco Suárez Ruiz, [http://fsuarez6.github.io](http://fsuarez6.github.io)
-
-### Documentation
-* See the installation instructions below.
-* This repository.
-* Throughout the various files in the packages.
-* For questions, please use [http://answers.ros.org](http://answers.ros.org)
+ROS packages developed by the [Group of Robots and Intelligent Machines](http://www.romin.upm.es/) from the [Universidad Politécnica de Madrid](http://www.upm.es/internacional). This group is part of the [Centre for Automation and Robotics](http://www.car.upm-csic.es/) (CAR UPM-CSIC). 
 
 ## Installation
 
 Check the installation instructions [here](http://fsuarez6.github.io/projects/geomagic-touch-in-ros/).
+# Geomagic_Touch_ROS_Driver
+# Geomagic_Touch_ROS_Drivers
+# Geomagic_Touch_ROS_Drivers
