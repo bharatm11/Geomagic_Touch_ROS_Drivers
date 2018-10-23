@@ -51,6 +51,7 @@ Run Geomagic_Touch_Setup in /opt/geomagic_touch_device_driver/
 Ensure that the device serial number is displayed 
 
 7. Device Diagnostics
+
 Run Geomagic_Touch_Diagnostic in /opt/geomagic_touch_device_driver/
 This can be used to calibrate the device, read encoders, apply test forces etc. 
 
