@@ -49,11 +49,13 @@ The haptic device always creates a COM Port as /dev/ttyACM0 and requires admin p
 chmod 777 /dev/ttyACM0
 ```
 Run Geomagic_Touch_Setup in /opt/geomagic_touch_device_driver/
+
 Ensure that the device serial number is displayed 
 
 7. Device Diagnostics
 
 Run Geomagic_Touch_Diagnostic in /opt/geomagic_touch_device_driver/
+
 This can be used to calibrate the device, read encoders, apply test forces etc. 
 
 8. Launch ROS Node
@@ -66,6 +68,7 @@ roslaunch omni_common omni_state.launch
 ```
 
 Data from the haptic device can be read from the following topics:
+
   /phantom/button
   
   /phantom/force_feedback
