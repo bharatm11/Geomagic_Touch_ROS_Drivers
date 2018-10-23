@@ -24,7 +24,7 @@
 
 float prev_time;
 int calibrationStyle;
-
+#define DEVICE_NAME "Default PHANTOM"
 struct OmniState {
   hduVector3Dd position;  //3x1 vector of position
   hduVector3Dd velocity;  //3x1 vector of velocity
@@ -295,7 +295,7 @@ int main(int argc, char** argv) {
   ////////////////////////////////////////////////////////////////
   HDErrorInfo error;
   HHD hHD;
-  hHD = hdInitDevice(HD_DEFAULT_DEVICE);
+  hHD = hdInitDevice(DEVICE_NAME);
   if (HD_DEVICE_ERROR(error = hdGetError())) {
     //hduPrintError(stderr, &error, "Failed to initialize haptic device");
     ROS_ERROR("Failed to initialize haptic device"); //: %s", &error);

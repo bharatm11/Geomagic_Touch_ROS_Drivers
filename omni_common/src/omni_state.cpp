@@ -68,31 +68,31 @@ public:
     ros::param::param(std::string("~omni_name"), omni_name, std::string("phantom"));
     ros::param::param(std::string("~reference_frame"), ref_frame, std::string("/map"));
     ros::param::param(std::string("~units"), units, std::string("mm"));
-    
+
     //Publish button state on NAME/button
     std::ostringstream stream1;
     stream1 << omni_name << "/button";
     std::string button_topic = std::string(stream1.str());
     button_publisher = n.advertise<omni_msgs::OmniButtonEvent>(button_topic.c_str(), 100);
-    
+
     //Publish on NAME/state
     std::ostringstream stream2;
     stream2 << omni_name << "/state";
     std::string state_topic_name = std::string(stream2.str());
     state_publisher = n.advertise<omni_msgs::OmniState>(state_topic_name.c_str(), 1);
-    
+
     //Subscribe to NAME/force_feedback
     std::ostringstream stream3;
     stream3 << omni_name << "/force_feedback";
     std::string force_feedback_topic = std::string(stream3.str());
     haptic_sub = n.subscribe(force_feedback_topic.c_str(), 1, &PhantomROS::force_callback, this);
-    
+
     //Publish on NAME/pose
     std::ostringstream stream4;
     stream4 << omni_name << "/pose";
     std::string pose_topic_name = std::string(stream4.str());
     pose_publisher = n.advertise<geometry_msgs::PoseStamped>(pose_topic_name.c_str(), 1);
-    
+
     //Publish on NAME/joint_states
     std::ostringstream stream5;
     stream5 << omni_name << "/joint_states";
@@ -173,7 +173,7 @@ public:
     // TODO: Append Current to the state msg
     state_msg.header.stamp = ros::Time::now();
     state_publisher.publish(state_msg);
-    
+
     // Publish the JointState msg
     sensor_msgs::JointState joint_state;
     joint_state.header.stamp = ros::Time::now();
@@ -192,7 +192,7 @@ public:
     joint_state.name[5] = "roll";
     joint_state.position[5] = -state->thetas[6] - M_PI;
     joint_publisher.publish(joint_state);
-    
+
     // Build the pose msg
     geometry_msgs::PoseStamped pose_msg;
     pose_msg.header = state_msg.header;
@@ -204,7 +204,7 @@ public:
     pose_publisher.publish(pose_msg);
 
     if ((state->buttons[0] != state->buttons_prev[0])
-        or (state->buttons[1] != state->buttons_prev[1])) 
+        or (state->buttons[1] != state->buttons_prev[1]))
     {
       if (state->buttons[0] == 1) {
         state->close_gripper = !(state->close_gripper);
@@ -222,7 +222,7 @@ public:
   }
 };
 
-HDCallbackCode HDCALLBACK omni_state_callback(void *pUserData) 
+HDCallbackCode HDCALLBACK omni_state_callback(void *pUserData)
 {
   OmniState *omni_state = static_cast<OmniState *>(pUserData);
   if (hdCheckCalibration() == HD_CALIBRATION_NEEDS_UPDATE) {
@@ -265,7 +265,7 @@ HDCallbackCode HDCALLBACK omni_state_callback(void *pUserData)
   omni_state->out_vel3 = omni_state->out_vel2;
   omni_state->out_vel2 = omni_state->out_vel1;
   omni_state->out_vel1 = omni_state->velocity;
-  
+
   //~ // Set forces if locked
   //~ if (omni_state->lock == true) {
     //~ omni_state->force = 0.04 * omni_state->units_ratio * (omni_state->lock_pos - omni_state->position)
@@ -334,7 +334,7 @@ void HHD_Auto_Calibration() {
   }
   while(hdCheckCalibration() != HD_CALIBRATION_OK) {
     usleep(1e6);
-    if (hdCheckCalibration() == HD_CALIBRATION_NEEDS_MANUAL_INPUT) 
+    if (hdCheckCalibration() == HD_CALIBRATION_NEEDS_MANUAL_INPUT)
       ROS_INFO("Please place the device into the inkwell for calibration");
     else if (hdCheckCalibration() == HD_CALIBRATION_NEEDS_UPDATE) {
       ROS_INFO("Calibration updated successfully");
