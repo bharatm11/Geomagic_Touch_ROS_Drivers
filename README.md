@@ -32,10 +32,10 @@ sudo ./install
 ```
 cd ~/geomagic_touch_device_driver_2015.5-26-amd64/
 sudo ./install
-# This gets installed in the following directory
+# This gets installed in the following directory:
 /opt/geomagic_touch_device_driver/ 
 ```
-5. **Only For 64-bit Systems** Create Symbolic Links to OpenHaptics SDK Libraries 
+5. **(Only For 64-bit Systems)** Create Symbolic Links to OpenHaptics SDK Libraries 
 ```
 sudo ln -s /usr/lib/x86_64-linux-gnu/libraw1394.so.11.0.1 /usr/lib/libraw1394.so.8
 sudo ln -s /usr/lib64/libPHANToMIO.so.4.3 /usr/lib/libPHANToMIO.so.4
@@ -43,6 +43,7 @@ sudo ln -s /usr/lib64/libHD.so.3.0.0 /usr/lib/libHD.so.3.0
 sudo ln -s /usr/lib64/libHL.so.3.0.0 /usr/lib/libHL.so.3.0 
 ```
 6. Device setup
+
 The haptic device always creates a COM Port as /dev/ttyACM0 and requires admin priviliges
 ```
 chmod 777 /dev/ttyACM0
