@@ -9,7 +9,7 @@ ROS packages developed by the [Group of Robots and Intelligent Machines](http://
 
 ## Installation
 
-#1. Install Dependencies
+1. Install Dependencies
 
 ```
 sudo apt-get install --no-install-recommends freeglut3-dev g++ libdrm-dev libexpat1-dev libglw1-mesa libglw1-mesa-dev libmotif-dev libncurses5-dev libraw1394-dev libx11-dev libxdamage-dev libxext-dev libxt-dev libxxf86vm-dev tcsh unzip x11proto-dri2-dev x11proto-gl-dev x11proto-print-dev
