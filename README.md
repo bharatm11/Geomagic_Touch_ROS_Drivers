@@ -89,5 +89,7 @@ https://github.com/fsuarez6/phantom_omni
 
 http://dsc.sensable.com/viewtopic.php?t=5730&sid=9866fe798e24bc745fdb7fce08ee99eb
 
+**Old device drivers** https://drive.google.com/drive/folders/1WJY6HpdtGh5zeyASfb4FYJFFG-QGItd6?usp=sharing
+
 
 
