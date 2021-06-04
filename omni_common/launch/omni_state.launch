@@ -3,11 +3,15 @@
   <arg name="units" default="mm"/>
   <arg name="publish_rate" default="1000"/>
   <arg name="omni_name" default="phantom"/>
+  <arg name="device_name" default="Left Device"/>
   
-  <node name="omni_state" pkg="omni_common" type="omni_state" output="screen"> 
-    <param name="omni_name" value="$(arg omni_name)"/>
-    <param name="publish_rate" value="$(arg publish_rate)"/>
-    <param name="reference_frame" value="$(arg reference_frame)"/>
-    <param name="units" value="$(arg units)"/>
-  </node>
+  <group ns="$(arg omni_name)">
+    <node name="omni_state" pkg="omni_common" type="omni_state" output="screen">
+      <param name="device_name" value="$(arg device_name)"/>
+      <param name="omni_name" value="phantom"/>
+      <param name="publish_rate" value="$(arg publish_rate)"/>
+      <param name="reference_frame" value="$(arg reference_frame)"/>
+      <param name="units" value="$(arg units)"/>
+    </node>
+  </group>
 </launch>
