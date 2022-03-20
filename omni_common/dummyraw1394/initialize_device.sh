@@ -33,7 +33,6 @@ done
 
 # Locate the dummyraw1394 folder
 OMNI_PKG=`rospack find omni_common`
-# OMNI_PKG=/home/ykawamura/ros/ws_franka/src/Geomagic_Touch_ROS_Drivers/omni_common
 RAW_FOLDER=$OMNI_PKG/dummyraw1394
 
 if [ $COMPILE = 1 ]; then
