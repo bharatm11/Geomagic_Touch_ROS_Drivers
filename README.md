@@ -7,6 +7,8 @@ This repository has been forked from the original repository by Francisco Suáre
 
 ROS packages developed by the [Group of Robots and Intelligent Machines](http://www.romin.upm.es/) from the [Universidad Politécnica de Madrid](http://www.upm.es/internacional). This group is part of the [Centre for Automation and Robotics](http://www.car.upm-csic.es/) (CAR UPM-CSIC). 
 
+The branch _dual-phantom-beta_ supports connection with dual phantom devices. This branch is in beta phase and is not fully tested.
+
 ## Installation
 
 1. Install Dependencies
