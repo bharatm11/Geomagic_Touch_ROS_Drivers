@@ -1,6 +1,8 @@
 3D Systems Geomagic Touch ROS Driver
 ============
 
+**This branch supports connection with dual phanton devices - beta phase.**
+
 ROS Packages for 3D Systems Geomagic Touch haptic device, **USB** version.
 
 This repository has been forked from the original repository by Francisco Suárez Ruiz, [http://fsuarez6.github.io](http://fsuarez6.github.io) for the Sensable PHANToM haptic device (https://github.com/fsuarez6/phantom_omni).
