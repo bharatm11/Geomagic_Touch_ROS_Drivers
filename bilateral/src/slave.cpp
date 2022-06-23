@@ -3,7 +3,6 @@
 #include <geometry_msgs/Wrench.h>
 #include <geometry_msgs/WrenchStamped.h>
 #include <urdf/model.h>
-#include <sensor_msgs/JointState.h>
 
 #include <string.h>
 #include <stdio.h>
@@ -56,8 +55,8 @@ public:
         ////////////////////omni anyway
 
         double master_x = pose->pose.position.x;
-        double master_y = pose->pose.position.y;
-        double master_z = pose->pose.position.z;
+        // double master_y = pose->pose.position.y;
+        // double master_z = pose->pose.position.z;
 
         omni_msgs::OmniFeedback force_msg;
         force_msg.force.x = master_x * (-5.);
