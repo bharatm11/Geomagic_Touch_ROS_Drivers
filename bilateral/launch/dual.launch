@@ -6,7 +6,7 @@
   <arg name="device_name_master" default="master_device"/>
   <arg name="omni_name_slave" default="phantom_slave"/>
   <arg name="device_name_slave" default="slave_device"/>
-  
+
   <group ns="$(arg omni_name_master)">
     <node name="omni_state" pkg="omni_common" type="omni_state" output="screen">
       <param name="device_name" value="$(arg device_name_master)"/>
@@ -16,7 +16,6 @@
       <param name="units" value="$(arg units)"/>
     </node>
   </group>
-
 
   <group ns="$(arg omni_name_slave)">
     <node name="omni_state" pkg="omni_common" type="omni_state" output="screen">
