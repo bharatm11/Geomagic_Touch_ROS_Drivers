@@ -30,7 +30,9 @@ private:
     geometry_msgs::Pose m_master_pose;
     geometry_msgs::Pose m_slave_pose;
 
-    double positionController(double ref, double x, double k);
+    std::array<double, 3> positionController(geometry_msgs::Point& ref, geometry_msgs::Point& th, std::vector<double>& k);
+    std::array<double, 3> m_th_pi;  // prev_input
+    std::array<double, 3> m_th_po;  // prev_output
 
 public:
     BilateralController(BilateralController::MS ms) : master_or_slave(ms), m_pnh("~")
@@ -74,7 +76,8 @@ public:
     void masterCallback(const geometry_msgs::PoseStamped::ConstPtr& master_pose)
     {
         this->updateMasterPose(master_pose->pose);
-        this->forceControl();
+        // 1kHzにするためにslaveからsubしたときのみcontrol
+        // this->forceControl();
     }
     void slaveCallback(const geometry_msgs::PoseStamped::ConstPtr& slave_pose)
     {

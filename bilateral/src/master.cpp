@@ -1,12 +1,24 @@
 #include "bilateral.hpp"
 
-double BilateralController::positionController(
-    double ref, double x, double k)
+std::array<double, 3> BilateralController::positionController(
+    geometry_msgs::Point& ref, geometry_msgs::Point& th, std::vector<double>& k)
 
 {
-    return k * (ref - x);  // TODO: ディジタル制御器かく
+    const double a0 = 5262;
+    const double a1 = -5214;
+    const double b1 = 0.9048;
+    std::array<double, 3> thi;
+    thi.at(0) = ref.x - th.x;
+    thi.at(1) = ref.y - th.y;
+    thi.at(2) = ref.z - th.z;
+    std::array<double, 3> ret;
+    for (int i = 0; i < 3; i++) {
+        ret.at(i) = k.at(i) * (a0 * thi.at(i) + a1 * m_th_pi.at(i) + b1 * m_th_po.at(i));
+        m_th_po.at(i) = ret.at(i);
+        m_th_pi.at(i) = thi.at(i);
+    }
+    return ret;
 }
-
 
 void BilateralController::forceControl()
 {
@@ -16,9 +28,10 @@ void BilateralController::forceControl()
     omni_msgs::OmniFeedback force_msg;
     // phantomの場合、forceをかける方向はencの向きと逆
     // A0Bにおいては各軸について符号あわせる
-    force_msg.force.x = this->positionController(slave_pos.x, master_pos.x, params.at(0));
-    force_msg.force.y = this->positionController(slave_pos.y, master_pos.y, params.at(1));
-    force_msg.force.z = this->positionController(slave_pos.z, master_pos.z, params.at(2));
+    std::array<double, 3> tauref = this->positionController(slave_pos, master_pos, params);
+    force_msg.force.x = tauref.at(0);
+    force_msg.force.y = tauref.at(1);
+    force_msg.force.z = tauref.at(2);
     force_msg.position.x = 0.0;
     force_msg.position.y = 0.0;
     force_msg.position.z = 0.0;
@@ -28,10 +41,11 @@ void BilateralController::forceControl()
 
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "bilateral_slave");
-    ROS_INFO("Start bilateral slave node ...");
+    ros::init(argc, argv, "bilateral_master");
+    sleep(5);
+    ROS_INFO("Start bilateral master node ...");
     BilateralController bilateral_controller(BilateralController::MS::Master);
     ros::spin();
-    ROS_INFO("End bilateral slave node ...");
+    ROS_INFO("End bilateral master node ...");
     return EXIT_SUCCESS;
 }
