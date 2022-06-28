@@ -8,10 +8,18 @@
 
 class BilateralController
 {
+public:
+    enum class MS
+    {
+        Master,
+        Slave
+    };
+
 private:
     std::string topic_name_master;
     std::string topic_name_slave;
     std::vector<double> ktheta_list;
+    BilateralController::MS master_or_slave;
 
     ros::NodeHandle m_nh;
     ros::NodeHandle m_pnh;
@@ -25,7 +33,7 @@ private:
     double positionController(double ref, double x, double k);
 
 public:
-    BilateralController() : m_pnh("~")
+    BilateralController(BilateralController::MS ms) : master_or_slave(ms), m_pnh("~")
     {
         if (!m_pnh.getParam("/topic_master", topic_name_master)) {
             ROS_FATAL("'topic_master' is not set");
@@ -42,7 +50,11 @@ public:
         } else {
             ROS_INFO("ktheta_list: [%lf, %lf, %lf]", ktheta_list.at(0), ktheta_list.at(1), ktheta_list.at(2));
         }
-        m_pub = m_nh.advertise<omni_msgs::OmniFeedback>(topic_name_slave + "/force_feedback", 1);
+        if (master_or_slave == BilateralController::MS::Master) {
+            m_pub = m_nh.advertise<omni_msgs::OmniFeedback>(topic_name_master + "/force_feedback", 1);
+        } else {
+            m_pub = m_nh.advertise<omni_msgs::OmniFeedback>(topic_name_slave + "/force_feedback", 1);
+        }
         m_sub_master = m_nh.subscribe(topic_name_master + "/pose", 1, &BilateralController::masterCallback, this);
         m_sub_slave = m_nh.subscribe(topic_name_slave + "/pose", 1, &BilateralController::slaveCallback, this);
     }
