@@ -17,6 +17,9 @@
       <param name="reference_frame" value="$(arg reference_frame)"/>
       <param name="units" value="$(arg units)"/>
     </node>
+    <node name="master" pkg="bilateral" type="bilateral_master" output="screen">
+      <rosparam>ktheta_list: [-10.0,-10.0,-10.0]</rosparam>
+    </node>
   </group>
 
   <group ns="$(arg omni_name_slave)">
