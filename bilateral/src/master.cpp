@@ -1,3 +1,7 @@
+#include <ros/ros.h>
+#include <geometry_msgs/PoseStamped.h>
+#include "omni_msgs/OmniFeedback.h"
+
 #include "bilateral.hpp"
 
 std::array<double, 3> BilateralController::positionController(

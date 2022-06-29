@@ -1,8 +1,11 @@
+#include <ros/ros.h>
+#include <geometry_msgs/PoseStamped.h>
+#include "omni_msgs/OmniFeedback.h"
+
 #include "bilateral.hpp"
 
 std::array<double, 3> BilateralController::positionController(
     geometry_msgs::Point& ref, geometry_msgs::Point& th, std::vector<double>& k)
-
 {
     const double a0 = 1121;
     const double a1 = -1115;
