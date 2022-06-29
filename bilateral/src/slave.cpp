@@ -1,3 +1,6 @@
+#include <ros/ros.h>
+#include <geometry_msgs/PoseStamped.h>
+#include "omni_msgs/OmniFeedback.h"
 #include "slave.hpp"
 
 void BilateralController::force_callback(const geometry_msgs::PoseStamped::ConstPtr& pose)
