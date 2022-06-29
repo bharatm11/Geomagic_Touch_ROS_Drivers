@@ -6,7 +6,6 @@
 
 double BilateralController::positionController(
     double ref, double x, double k)
-
 {
     return k * (ref - x);  // TODO: ディジタル制御器かく
 }
