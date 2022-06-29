@@ -6,6 +6,8 @@
   <arg name="device_name_master" default="master_device"/>
   <arg name="omni_name_slave" default="phantom_slave"/>
   <arg name="device_name_slave" default="slave_device"/>
+  <param name="topic_master" value="/$(arg omni_name_master)/phantom"/>
+  <param name="topic_slave" value="/$(arg omni_name_slave)/phantom"/>
 
   <group ns="$(arg omni_name_master)">
     <node name="omni_state" pkg="omni_common" type="omni_state" output="screen">
@@ -14,6 +16,9 @@
       <param name="publish_rate" value="$(arg publish_rate)"/>
       <param name="reference_frame" value="$(arg reference_frame)"/>
       <param name="units" value="$(arg units)"/>
+    </node>
+    <node name="master" pkg="bilateral" type="bilateral_master" output="screen">
+      <rosparam>ktheta_list: [-10.0,-10.0,-10.0]</rosparam>
     </node>
   </group>
 
@@ -25,7 +30,8 @@
       <param name="reference_frame" value="$(arg reference_frame)"/>
       <param name="units" value="$(arg units)"/>
     </node>
-    <node name="slave" pkg="bilateral" type="slave" output="screen">
+    <node name="slave" pkg="bilateral" type="bilateral_slave" output="screen">
+      <rosparam>ktheta_list: [-10.0,-10.0,-10.0]</rosparam>
     </node>
   </group>
 
