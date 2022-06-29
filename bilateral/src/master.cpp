@@ -4,9 +4,9 @@ std::array<double, 3> BilateralController::positionController(
     geometry_msgs::Point& ref, geometry_msgs::Point& th, std::vector<double>& k)
 
 {
-    const double a0 = 5262;
-    const double a1 = -5214;
-    const double b1 = 0.9048;
+    const double a0 = 1121;
+    const double a1 = -1115;
+    const double b1 = 0.9876;
     std::array<double, 3> thi;
     thi.at(0) = ref.x - th.x;
     thi.at(1) = ref.y - th.y;
