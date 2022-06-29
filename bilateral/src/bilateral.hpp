@@ -2,9 +2,10 @@
 
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <string>
-#include <array>
 #include "omni_msgs/OmniFeedback.h"
+
+#include <array>
+#include <string>
 
 class BilateralController
 {

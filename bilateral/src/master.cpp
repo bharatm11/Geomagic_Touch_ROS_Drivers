@@ -1,3 +1,7 @@
+#include <ros/ros.h>
+#include <geometry_msgs/PoseStamped.h>
+#include "omni_msgs/OmniFeedback.h"
+
 #include "bilateral.hpp"
 
 double BilateralController::positionController(
@@ -28,10 +32,10 @@ void BilateralController::forceControl()
 
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "bilateral_slave");
-    ROS_INFO("Start bilateral slave node ...");
+    ros::init(argc, argv, "bilateral_master");
+    ROS_INFO("Start bilateral master node ...");
     BilateralController bilateral_controller(BilateralController::MS::Master);
     ros::spin();
-    ROS_INFO("End bilateral slave node ...");
+    ROS_INFO("End bilateral master node ...");
     return EXIT_SUCCESS;
 }
