@@ -17,10 +17,10 @@ public:
     };
 
 private:
-    std::string topic_name_master;
-    std::string topic_name_slave;
-    std::vector<double> ktheta_list;
-    BilateralController::MS master_or_slave;
+    std::string m_topic_name_master;
+    std::string m_topic_name_slave;
+    std::vector<double> m_ktheta_list;
+    BilateralController::MS m_master_or_slave;
 
     ros::NodeHandle m_nh;
     ros::NodeHandle m_pnh;
@@ -31,35 +31,35 @@ private:
     geometry_msgs::Pose m_master_pose;
     geometry_msgs::Pose m_slave_pose;
 
-    std::array<double, 3> positionController(geometry_msgs::Point& ref, geometry_msgs::Point& th, std::vector<double>& k);
+    std::array<double, 3> positionIIRController(geometry_msgs::Point& ref, geometry_msgs::Point& th, std::vector<double>& k);
     std::array<double, 3> m_th_pi;  // prev_input
     std::array<double, 3> m_th_po;  // prev_output
 
 public:
-    BilateralController(BilateralController::MS ms) : master_or_slave(ms), m_pnh("~")
+    BilateralController(BilateralController::MS ms) : m_master_or_slave(ms), m_pnh("~")
     {
-        if (!m_pnh.getParam("/topic_master", topic_name_master)) {
+        if (!m_pnh.getParam("/topic_master", m_topic_name_master)) {
             ROS_FATAL("'topic_master' is not set");
         } else {
-            ROS_INFO("topic_master: %s", topic_name_master.c_str());
+            ROS_INFO("topic_master: %s", m_topic_name_master.c_str());
         }
-        if (!m_pnh.getParam("/topic_slave", topic_name_slave)) {
+        if (!m_pnh.getParam("/topic_slave", m_topic_name_slave)) {
             ROS_FATAL("'topic_slave' is not set");
         } else {
-            ROS_INFO("topic_slave: %s", topic_name_slave.c_str());
+            ROS_INFO("topic_slave: %s", m_topic_name_slave.c_str());
         }
-        if (!m_pnh.getParam("ktheta_list", ktheta_list)) {
+        if (!m_pnh.getParam("ktheta_list", m_ktheta_list)) {
             ROS_FATAL("'ktheta_list' is not set");
         } else {
-            ROS_INFO("ktheta_list: [%lf, %lf, %lf]", ktheta_list.at(0), ktheta_list.at(1), ktheta_list.at(2));
+            ROS_INFO("ktheta_list: [%lf, %lf, %lf]", m_ktheta_list.at(0), m_ktheta_list.at(1), m_ktheta_list.at(2));
         }
-        if (master_or_slave == BilateralController::MS::Master) {
-            m_pub = m_nh.advertise<omni_msgs::OmniFeedback>(topic_name_master + "/force_feedback", 1);
+        if (m_master_or_slave == BilateralController::MS::Master) {
+            m_pub = m_nh.advertise<omni_msgs::OmniFeedback>(m_topic_name_master + "/force_feedback", 1);
         } else {
-            m_pub = m_nh.advertise<omni_msgs::OmniFeedback>(topic_name_slave + "/force_feedback", 1);
+            m_pub = m_nh.advertise<omni_msgs::OmniFeedback>(m_topic_name_slave + "/force_feedback", 1);
         }
-        m_sub_master = m_nh.subscribe(topic_name_master + "/pose", 1, &BilateralController::masterCallback, this);
-        m_sub_slave = m_nh.subscribe(topic_name_slave + "/pose", 1, &BilateralController::slaveCallback, this);
+        m_sub_master = m_nh.subscribe(m_topic_name_master + "/pose", 1, &BilateralController::masterCallback, this);
+        m_sub_slave = m_nh.subscribe(m_topic_name_slave + "/pose", 1, &BilateralController::slaveCallback, this);
     }
 
     void updateMasterPose(const geometry_msgs::Pose& pose)
@@ -72,7 +72,7 @@ public:
     }
     geometry_msgs::Pose& getMasterPose() { return m_master_pose; }
     geometry_msgs::Pose& getSlavePose() { return m_slave_pose; }
-    std::vector<double>& getParams() { return ktheta_list; }
+    std::vector<double>& getPosParams() { return m_ktheta_list; }
     void forceControl();
     void masterCallback(const geometry_msgs::PoseStamped::ConstPtr& master_pose)
     {
