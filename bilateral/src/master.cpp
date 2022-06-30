@@ -2,6 +2,9 @@
 #include <geometry_msgs/PoseStamped.h>
 #include "omni_msgs/OmniFeedback.h"
 
+#include <vector>
+#include <array>
+
 #include "bilateral.hpp"
 
 void BilateralController::forceControl()
@@ -13,7 +16,9 @@ void BilateralController::forceControl()
     // phantomの場合、forceをかける方向はencの向きと逆 -> kthetaはマイナス
     // A0Bにおいては各軸について符号あわせる
     // slaveをmasterにあわせる -> ref: slave, th: master
-    std::array<double, 3> tauref = this->positionIIRController(slave_pos, master_pos, ktheta);
+    std::array<double, 3> tauref
+        = this->positionIIRController(slave_pos, master_pos, ktheta)
+          + this->forceIIRController(master_pos, slave_pos);  //, ktheta);
     force_msg.force.x = tauref.at(0);
     force_msg.force.y = tauref.at(1);
     force_msg.force.z = tauref.at(2);

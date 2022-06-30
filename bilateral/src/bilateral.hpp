@@ -61,6 +61,37 @@ private:
         return ret;
     }
 
+    // IIR (大嘘)
+    std::array<double, 3> forceIIRController(
+        geometry_msgs::Point& master, geometry_msgs::Point& slave)  //, std::vector<double>& k)
+    {
+        static int p_cnt = 0;
+        static int m_cnt = 0;
+        const double theta_threshold = 0.05;
+        const int time_threshold_ms = 100;
+        ROS_INFO("diff: %lf", master.x - slave.x);
+        if (master.x - slave.x > theta_threshold) {
+            p_cnt++;
+            m_cnt = 0;
+        } else if (master.x - slave.x < -theta_threshold) {
+            p_cnt = 0;
+            m_cnt++;
+        } else {
+            p_cnt = 0;
+            m_cnt = 0;
+        }
+        ROS_INFO("p: %d, m: %d", p_cnt, m_cnt);
+
+        const double f = 1.;
+        if (p_cnt > time_threshold_ms) {
+            return std::array<double, 3>{f, 0.0, 0.0};
+        } else if (m_cnt > time_threshold_ms) {
+            return std::array<double, 3>{-f, 0.0, 0.0};
+        } else {
+            return std::array<double, 3>{0.0, 0.0, 0.0};
+        }
+    }
+
 public:
     BilateralController(BilateralController::MS ms) : m_master_or_slave(ms), m_pnh("~")
     {
@@ -112,3 +143,22 @@ public:
         this->forceControl();
     }
 };
+
+template <typename T, std::size_t N>
+std::array<T, N> operator+(const std::array<T, N>& a, const std::array<T, N>& b) noexcept
+{
+    std::array<T, N> ret;
+    for (std::size_t i = 0; i < N; i++) {
+        ret.at(i) = a.at(i) + b.at(i);
+    }
+    return ret;
+}
+template <typename T, std::size_t N>
+std::array<T, N> operator-(const std::array<T, N>& a, const std::array<T, N>& b) noexcept
+{
+    std::array<T, N> ret;
+    for (std::size_t i = 0; i < N; i++) {
+        ret.at(i) = a.at(i) - b.at(i);
+    }
+    return ret;
+}
