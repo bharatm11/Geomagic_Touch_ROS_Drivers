@@ -2,7 +2,7 @@
 
 ## 制御器設計
 1. `$ ./scripts/calc_controller.sh`
-2. terminalに表示されるHcをmaster/slave.cppに反映させる
+2. terminalに表示されるHcをbilateral.hppに反映させる
     - 例:
         ```
         Hc =
