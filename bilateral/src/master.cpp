@@ -2,6 +2,10 @@
 #include <geometry_msgs/PoseStamped.h>
 #include "omni_msgs/OmniFeedback.h"
 
+#include <vector>
+#include <array>
+#include <boost/shared_ptr.hpp>
+
 #include "bilateral.hpp"
 
 void BilateralController::forceControl()
@@ -27,7 +31,14 @@ void BilateralController::forceControl()
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "bilateral_master");
-    sleep(5);
+
+    ros::NodeHandle nh;
+    geometry_msgs::PoseStampedConstPtr ptr;
+    ptr = ros::topic::waitForMessage<geometry_msgs::PoseStamped>("/phantom_slave/phantom/pose", nh, ros::Duration(1.0));
+    if (ptr == nullptr) {
+        ROS_ERROR("DID NOT RECEIVE TOPIC");
+        return EXIT_FAILURE;
+    }
     ROS_INFO("Start bilateral master node ...");
     BilateralController bilateral_controller(BilateralController::MS::Master);
     ros::spin();
