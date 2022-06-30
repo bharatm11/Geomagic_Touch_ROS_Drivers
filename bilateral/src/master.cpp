@@ -8,10 +8,11 @@ void BilateralController::forceControl()
 {
     geometry_msgs::Point master_pos = this->getMasterPose().position;
     geometry_msgs::Point slave_pos = this->getSlavePose().position;
-    std::vector<double> ktheta = this->getPosParams();
+    std::vector<double> ktheta = this->getPosGains();
     omni_msgs::OmniFeedback force_msg;
-    // phantomの場合、forceをかける方向はencの向きと逆
+    // phantomの場合、forceをかける方向はencの向きと逆 -> kthetaはマイナス
     // A0Bにおいては各軸について符号あわせる
+    // slaveをmasterにあわせる -> ref: slave, th: master
     std::array<double, 3> tauref = this->positionIIRController(slave_pos, master_pos, ktheta);
     force_msg.force.x = tauref.at(0);
     force_msg.force.y = tauref.at(1);
