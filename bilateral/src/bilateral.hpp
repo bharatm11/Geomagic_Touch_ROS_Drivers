@@ -8,7 +8,6 @@
 #include <vector>
 #include <string>
 
-constexpr int JOINT_NUM = 3;
 
 class BilateralController
 {
@@ -36,24 +35,24 @@ private:
     geometry_msgs::Pose m_master_pose;
     geometry_msgs::Pose m_slave_pose;
 
-    std::array<double, JOINT_NUM> m_th_pi;  // prev_input
-    std::array<double, JOINT_NUM> m_th_po;  // prev_output
+    std::array<double, 3> m_th_pi;  // prev_input
+    std::array<double, 3> m_th_po;  // prev_output
 
     // 位置にもとづくディジタル制御器
     // tustin変換 (双一次z変換) によりIIR型フィルタとして構成している
-    std::array<double, JOINT_NUM> positionIIRController(
+    std::array<double, 3> positionIIRController(
         geometry_msgs::Point& master, geometry_msgs::Point& slave, std::vector<double>& joint_gain)
     {
         const double a0 = 157.8;
         const double a1 = -157.7;
         const double b1 = 0.9704;
-        std::array<double, JOINT_NUM> diff;  // theta_input_diff
+        std::array<double, 3> diff;  // theta_input_diff
         // x, y, zでしかaccessできないので仕方なく...
         diff.at(0) = master.x - this->m_position_scale_gain.at(0) * slave.x;
         diff.at(1) = master.y - this->m_position_scale_gain.at(1) * slave.y;
         diff.at(2) = master.z - this->m_position_scale_gain.at(2) * slave.z;
-        std::array<double, JOINT_NUM> ret;
-        for (int i = 0; i < JOINT_NUM; i++) {
+        std::array<double, 3> ret;
+        for (int i = 0; i < 3; i++) {
             ret.at(i) = joint_gain.at(i) * (a0 * diff.at(i) + a1 * m_th_pi.at(i))  // m_th_pi: prev_input
                         + b1 * m_th_po.at(i);                                      //m_th_po: prev_output
             // update variables
@@ -64,7 +63,7 @@ private:
     }
 
     // TODO: 今はとりあえず定数だが、モータパラメータを使ってDOB、RFOBを構成する
-    std::array<double, JOINT_NUM> forceIIRController(
+    std::array<double, 3> forceIIRController(
         geometry_msgs::Point& master, geometry_msgs::Point& slave)  //, std::vector<double>& k)
     {
         static int cnt = 0;
@@ -81,9 +80,9 @@ private:
 
         const double f = 1.;
         if (cnt > time_threshold_ms) {
-            return std::array<double, JOINT_NUM>{(diff > 0.0 ? -1.0 : 1.0) * f, 0.0, 0.0};
+            return std::array<double, 3>{(diff > 0.0 ? -1.0 : 1.0) * f, 0.0, 0.0};
         } else {
-            return std::array<double, JOINT_NUM>{0.0, 0.0, 0.0};
+            return std::array<double, 3>{0.0, 0.0, 0.0};
         }
     }
 
