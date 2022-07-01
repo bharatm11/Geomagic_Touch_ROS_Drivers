@@ -35,12 +35,19 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "bilateral_master");
 
     ros::NodeHandle nh;
-    geometry_msgs::PoseStampedConstPtr ptr;
-    ptr = ros::topic::waitForMessage<geometry_msgs::PoseStamped>("/phantom_slave/phantom/pose", nh, ros::Duration(1.0));
-    if (ptr == nullptr) {
-        ROS_ERROR("DID NOT RECEIVE TOPIC");
+    // slaveのomni_stateが立ち上がるまで待つ
+    geometry_msgs::PoseStampedConstPtr ptr_s = ros::topic::waitForMessage<geometry_msgs::PoseStamped>("/phantom_slave/phantom/pose", nh, ros::Duration(1.0));
+    if (ptr_s == nullptr) {
+        ROS_ERROR("DID NOT RECEIVE SLAVE TOPIC");
         return EXIT_FAILURE;
     }
+    // masterのomni_stateが立ち上がるまで待つ
+    geometry_msgs::PoseStampedConstPtr ptr_m = ros::topic::waitForMessage<geometry_msgs::PoseStamped>("/phantom_master/phantom/pose", nh, ros::Duration(1.0));
+    if (ptr_m == nullptr) {
+        ROS_ERROR("DID NOT RECEIVE MASTER TOPIC");
+        return EXIT_FAILURE;
+    }
+
     ROS_INFO("Start bilateral master node ...");
     BilateralController bilateral_controller(BilateralController::MS::Master);
     ros::spin();
