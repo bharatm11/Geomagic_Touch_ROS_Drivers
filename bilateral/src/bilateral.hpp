@@ -38,13 +38,12 @@ private:
     // tustin変換 (双一次z変換) によりIIR型フィルタとして構成している
     // ref: reference
     // th: controlled obj.
-    //
     std::array<double, 3> positionIIRController(
         geometry_msgs::Point& ref, geometry_msgs::Point& th, std::vector<double>& k)
     {
-        const double a0 = 34.94;
-        const double a1 = -34.89;
-        const double b1 = 0.995;
+        const double a0 = 157.8;
+        const double a1 = -157.7;
+        const double b1 = 0.9704;
         std::array<double, 3> thi;  // theta_input
         // x, y, zでしかaccessできないので仕方なく...
         thi.at(0) = ref.x - th.x;
