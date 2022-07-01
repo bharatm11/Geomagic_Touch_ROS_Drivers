@@ -88,31 +88,29 @@ private:
 public:
     BilateralController(BilateralController::MS ms) : m_master_or_slave(ms), m_pnh("~")
     {
+        // get parameters
         if (!m_pnh.getParam("/topic_master", m_topic_name_master)) {
             ROS_FATAL("'topic_master' is not set");
-        } else {
-            ROS_INFO("topic_master: %s", m_topic_name_master.c_str());
         }
+        ROS_INFO("topic_master: %s", m_topic_name_master.c_str());
         if (!m_pnh.getParam("/topic_slave", m_topic_name_slave)) {
             ROS_FATAL("'topic_slave' is not set");
-        } else {
-            ROS_INFO("topic_slave: %s", m_topic_name_slave.c_str());
         }
+        ROS_INFO("topic_slave: %s", m_topic_name_slave.c_str());
         if (!m_pnh.getParam("joint_gain_list", m_joint_gain_list)) {
             ROS_FATAL("'joint_gain_list' is not set");
-        } else {
-            ROS_INFO("joint_gain_list: [%lf, %lf, %lf]", m_joint_gain_list.at(0), m_joint_gain_list.at(1), m_joint_gain_list.at(2));
         }
+        ROS_INFO("joint_gain_list: [%lf, %lf, %lf]", m_joint_gain_list.at(0), m_joint_gain_list.at(1), m_joint_gain_list.at(2));
         if (!m_pnh.getParam("/position_scale_gain", m_position_scale_gain)) {
             ROS_FATAL("'position_scale_gain' is not set");
-        } else {
-            ROS_INFO("position_scale_gain: [%lf, %lf, %lf]", m_position_scale_gain.at(0), m_position_scale_gain.at(1), m_position_scale_gain.at(2));
         }
+        ROS_INFO("position_scale_gain: [%lf, %lf, %lf]", m_position_scale_gain.at(0), m_position_scale_gain.at(1), m_position_scale_gain.at(2));
         if (!m_pnh.getParam("/force_scale_gain", m_force_scale_gain)) {
             ROS_FATAL("'force_scale_gain' is not set");
-        } else {
-            ROS_INFO("force_scale_gain: [%lf, %lf, %lf]", m_force_scale_gain.at(0), m_force_scale_gain.at(1), m_force_scale_gain.at(2));
         }
+        ROS_INFO("force_scale_gain: [%lf, %lf, %lf]", m_force_scale_gain.at(0), m_force_scale_gain.at(1), m_force_scale_gain.at(2));
+
+        // set publisher/subscriber
         if (m_master_or_slave == BilateralController::MS::Master) {
             m_pub = m_nh.advertise<omni_msgs::OmniFeedback>(m_topic_name_master + "/force_feedback", 1);
         } else {
