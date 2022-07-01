@@ -1,10 +1,10 @@
+#include <array>
+#include <boost/shared_ptr.hpp>
+#include <vector>
+
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
 #include "omni_msgs/OmniFeedback.h"
-
-#include <vector>
-#include <array>
-#include <boost/shared_ptr.hpp>
 
 #include "bilateral.hpp"
 
@@ -19,7 +19,7 @@ void BilateralController::forceControl()
     // slaveをmasterにあわせる -> ref: master, th: slave
     std::array<double, 3> tauref
         = this->positionIIRController(master_pos, slave_pos, joint_gain)
-          - this->forceIIRController(master_pos, slave_pos);  //, ktheta);
+          + this->forceIIRController(master_pos, slave_pos);  //, ktheta);
     force_msg.force.x = tauref.at(0);
     force_msg.force.y = tauref.at(1);
     force_msg.force.z = tauref.at(2);
