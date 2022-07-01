@@ -12,13 +12,13 @@ void BilateralController::forceControl()
 {
     geometry_msgs::Point master_pos = this->getMasterPose().position;
     geometry_msgs::Point slave_pos = this->getSlavePose().position;
-    std::vector<double> ktheta = this->getPosGains();
+    std::vector<double> joint_gain = this->getPosGains();
     omni_msgs::OmniFeedback force_msg;
-    // phantomの場合、forceをかける方向はencの向きと逆 -> kthetaはマイナス
+    // phantomの場合、forceをかける方向はencの向きと逆 -> joint_gainはマイナス
     // A0Bにおいては各軸について符号あわせる
     // slaveをmasterにあわせる -> ref: master, th: slave
     std::array<double, 3> tauref
-        = this->positionIIRController(master_pos, slave_pos, ktheta)
+        = this->positionIIRController(master_pos, slave_pos, joint_gain)
           - this->forceIIRController(master_pos, slave_pos);  //, ktheta);
     force_msg.force.x = tauref.at(0);
     force_msg.force.y = tauref.at(1);
@@ -47,7 +47,6 @@ int main(int argc, char** argv)
 
     // slaveのomni_stateが立ち上がるまで待つ
     if (!waitForMyMsg<geometry_msgs::PoseStamped>("/phantom_slave/phantom/pose", nh)) {
-
         ROS_ERROR("DID NOT RECEIVE SLAVE TOPIC");
         return EXIT_FAILURE;
     }
