@@ -5,7 +5,10 @@
 #include "omni_msgs/OmniFeedback.h"
 
 #include <array>
+#include <vector>
 #include <string>
+
+constexpr int JOINT_NUM = 3;
 
 class BilateralController
 {
@@ -20,6 +23,8 @@ private:
     std::string m_topic_name_master;
     std::string m_topic_name_slave;
     std::vector<double> m_joint_gain_list;
+    std::vector<double> m_position_scale_gain;
+    std::vector<double> m_force_scale_gain;
     BilateralController::MS m_master_or_slave;
 
     ros::NodeHandle m_nh;
@@ -31,44 +36,43 @@ private:
     geometry_msgs::Pose m_master_pose;
     geometry_msgs::Pose m_slave_pose;
 
-    std::array<double, 3> m_th_pi;  // prev_input
-    std::array<double, 3> m_th_po;  // prev_output
+    std::array<double, JOINT_NUM> m_th_pi;  // prev_input
+    std::array<double, JOINT_NUM> m_th_po;  // prev_output
 
     // 位置にもとづくディジタル制御器
     // tustin変換 (双一次z変換) によりIIR型フィルタとして構成している
-    // ref: reference
-    // th: controlled obj.
-    std::array<double, 3> positionIIRController(
-        geometry_msgs::Point& ref, geometry_msgs::Point& th, std::vector<double>& joint_gain)
+    std::array<double, JOINT_NUM> positionIIRController(
+        geometry_msgs::Point& master, geometry_msgs::Point& slave, std::vector<double>& joint_gain)
     {
         const double a0 = 157.8;
         const double a1 = -157.7;
         const double b1 = 0.9704;
-        std::array<double, 3> thi;  // theta_input
+        std::array<double, JOINT_NUM> diff;  // theta_input_diff
         // x, y, zでしかaccessできないので仕方なく...
-        thi.at(0) = ref.x - th.x;
-        thi.at(1) = ref.y - th.y;
-        thi.at(2) = ref.z - th.z;
-        std::array<double, 3> ret;
-        for (int i = 0; i < 3; i++) {
-            ret.at(i) = joint_gain.at(i) * (a0 * thi.at(i) + a1 * m_th_pi.at(i))  // m_th_pi: prev_input
-                        + b1 * m_th_po.at(i);                                     //m_th_po: prev_output
+        diff.at(0) = master.x - this->m_position_scale_gain.at(0) * slave.x;
+        diff.at(1) = master.y - this->m_position_scale_gain.at(1) * slave.y;
+        diff.at(2) = master.z - this->m_position_scale_gain.at(2) * slave.z;
+        std::array<double, JOINT_NUM> ret;
+        for (int i = 0; i < JOINT_NUM; i++) {
+            ret.at(i) = joint_gain.at(i) * (a0 * diff.at(i) + a1 * m_th_pi.at(i))  // m_th_pi: prev_input
+                        + b1 * m_th_po.at(i);                                      //m_th_po: prev_output
             // update variables
             m_th_po.at(i) = ret.at(i);
-            m_th_pi.at(i) = thi.at(i);
+            m_th_pi.at(i) = diff.at(i);
         }
         return ret;
     }
 
     // TODO: 今はとりあえず定数だが、モータパラメータを使ってDOB、RFOBを構成する
-    std::array<double, 3> forceIIRController(
+    std::array<double, JOINT_NUM> forceIIRController(
         geometry_msgs::Point& master, geometry_msgs::Point& slave)  //, std::vector<double>& k)
     {
         static int cnt = 0;
-        const double theta_threshold = 0.05;
-        const int time_threshold_ms = 100;
-        ROS_INFO("diff: %lf", master.x - slave.x);
-        if (std::abs(master.x - slave.x) > theta_threshold) {
+        constexpr double theta_threshold = 0.05;
+        constexpr int time_threshold_ms = 100;
+        const double diff = master.x - this->m_position_scale_gain.at(0) * slave.x;
+        ROS_INFO("diff: %lf", diff);
+        if (std::abs(diff) > theta_threshold) {
             cnt++;
         } else {
             cnt = 0;
@@ -77,9 +81,9 @@ private:
 
         const double f = 1.;
         if (cnt > time_threshold_ms) {
-            return std::array<double, 3>{(master.x - slave.x > 0.0 ? 1.0 : -1.0) * f, 0.0, 0.0};
+            return std::array<double, JOINT_NUM>{(diff > 0.0 ? -1.0 : 1.0) * f, 0.0, 0.0};
         } else {
-            return std::array<double, 3>{0.0, 0.0, 0.0};
+            return std::array<double, JOINT_NUM>{0.0, 0.0, 0.0};
         }
     }
 
@@ -100,6 +104,16 @@ public:
             ROS_FATAL("'joint_gain_list' is not set");
         } else {
             ROS_INFO("joint_gain_list: [%lf, %lf, %lf]", m_joint_gain_list.at(0), m_joint_gain_list.at(1), m_joint_gain_list.at(2));
+        }
+        if (!m_pnh.getParam("/position_scale_gain", m_position_scale_gain)) {
+            ROS_FATAL("'position_scale_gain' is not set");
+        } else {
+            ROS_INFO("position_scale_gain: [%lf, %lf, %lf]", m_position_scale_gain.at(0), m_position_scale_gain.at(1), m_position_scale_gain.at(2));
+        }
+        if (!m_pnh.getParam("/force_scale_gain", m_force_scale_gain)) {
+            ROS_FATAL("'force_scale_gain' is not set");
+        } else {
+            ROS_INFO("force_scale_gain: [%lf, %lf, %lf]", m_force_scale_gain.at(0), m_force_scale_gain.at(1), m_force_scale_gain.at(2));
         }
         if (m_master_or_slave == BilateralController::MS::Master) {
             m_pub = m_nh.advertise<omni_msgs::OmniFeedback>(m_topic_name_master + "/force_feedback", 1);
@@ -150,6 +164,24 @@ std::array<T, N> operator-(const std::array<T, N>& a, const std::array<T, N>& b)
     std::array<T, N> ret;
     for (std::size_t i = 0; i < N; i++) {
         ret.at(i) = a.at(i) - b.at(i);
+    }
+    return ret;
+}
+template <typename T, std::size_t N>
+std::array<T, N> operator*(const double a, const std::array<T, N>& b) noexcept
+{
+    std::array<T, N> ret;
+    for (std::size_t i = 0; i < N; i++) {
+        ret.at(i) = a * b.at(i);
+    }
+    return ret;
+}
+template <typename T, std::size_t N>
+std::array<T, N> operator-(const std::array<T, N>& a) noexcept
+{
+    std::array<T, N> ret;
+    for (std::size_t i = 0; i < N; i++) {
+        ret.at(i) = -a.at(i);
     }
     return ret;
 }
