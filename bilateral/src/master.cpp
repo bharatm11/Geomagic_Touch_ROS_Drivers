@@ -52,7 +52,9 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
     // masterのomni_stateが立ち上がるまで待つ
+
     if (!waitForMyMsg<geometry_msgs::PoseStamped>("/phantom_master/phantom/pose", nh)) {
+
         ROS_ERROR("DID NOT RECEIVE MASTER TOPIC");
         return EXIT_FAILURE;
     }

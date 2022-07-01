@@ -4,7 +4,6 @@
 
 #include <vector>
 #include <array>
-#include <optional>
 #include <boost/shared_ptr.hpp>
 
 #include "bilateral.hpp"
@@ -48,6 +47,7 @@ int main(int argc, char** argv)
 
     // slaveのomni_stateが立ち上がるまで待つ
     if (!waitForMyMsg<geometry_msgs::PoseStamped>("/phantom_slave/phantom/pose", nh)) {
+
         ROS_ERROR("DID NOT RECEIVE SLAVE TOPIC");
         return EXIT_FAILURE;
     }
