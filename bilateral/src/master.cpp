@@ -6,7 +6,18 @@
 #include <geometry_msgs/PoseStamped.h>
 #include "omni_msgs/OmniFeedback.h"
 
-#include "bilateral.hpp"
+#include "bilateral/bilateral.hpp"
+
+template <typename T>
+static bool waitForMyMsg(const std::string& topic_name, ros::NodeHandle& nh)
+{
+    boost::shared_ptr<const T> ptr = ros::topic::waitForMessage<T>(topic_name, nh, ros::Duration(1.0));
+    if (ptr == nullptr) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 void BilateralController::forceControl()
 {
@@ -28,18 +39,6 @@ void BilateralController::forceControl()
     force_msg.position.z = 0.0;
     m_pub.publish(force_msg);
 }
-
-template <typename T>
-static bool waitForMyMsg(const std::string& topic_name, ros::NodeHandle& nh)
-{
-    boost::shared_ptr<const T> ptr = ros::topic::waitForMessage<T>(topic_name, nh, ros::Duration(1.0));
-    if (ptr == nullptr) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
 
 int main(int argc, char** argv)
 {

@@ -8,6 +8,43 @@
 #include <geometry_msgs/PoseStamped.h>
 #include "omni_msgs/OmniFeedback.h"
 
+template <typename T, std::size_t N>
+std::array<T, N> operator+(const std::array<T, N>& a, const std::array<T, N>& b) noexcept
+{
+    std::array<T, N> ret;
+    for (std::size_t i = 0; i < N; i++) {
+        ret.at(i) = a.at(i) + b.at(i);
+    }
+    return ret;
+}
+template <typename T, std::size_t N>
+std::array<T, N> operator-(const std::array<T, N>& a, const std::array<T, N>& b) noexcept
+{
+    std::array<T, N> ret;
+    for (std::size_t i = 0; i < N; i++) {
+        ret.at(i) = a.at(i) - b.at(i);
+    }
+    return ret;
+}
+template <typename T, std::size_t N>
+std::array<T, N> operator*(const double a, const std::array<T, N>& b) noexcept
+{
+    std::array<T, N> ret;
+    for (std::size_t i = 0; i < N; i++) {
+        ret.at(i) = a * b.at(i);
+    }
+    return ret;
+}
+template <typename T, std::size_t N>
+std::array<T, N> operator-(const std::array<T, N>& a) noexcept
+{
+    std::array<T, N> ret;
+    for (std::size_t i = 0; i < N; i++) {
+        ret.at(i) = -a.at(i);
+    }
+    return ret;
+}
+
 class BilateralController
 {
 public:
@@ -144,40 +181,3 @@ public:
         this->forceControl();
     }
 };
-
-template <typename T, std::size_t N>
-std::array<T, N> operator+(const std::array<T, N>& a, const std::array<T, N>& b) noexcept
-{
-    std::array<T, N> ret;
-    for (std::size_t i = 0; i < N; i++) {
-        ret.at(i) = a.at(i) + b.at(i);
-    }
-    return ret;
-}
-template <typename T, std::size_t N>
-std::array<T, N> operator-(const std::array<T, N>& a, const std::array<T, N>& b) noexcept
-{
-    std::array<T, N> ret;
-    for (std::size_t i = 0; i < N; i++) {
-        ret.at(i) = a.at(i) - b.at(i);
-    }
-    return ret;
-}
-template <typename T, std::size_t N>
-std::array<T, N> operator*(const double a, const std::array<T, N>& b) noexcept
-{
-    std::array<T, N> ret;
-    for (std::size_t i = 0; i < N; i++) {
-        ret.at(i) = a * b.at(i);
-    }
-    return ret;
-}
-template <typename T, std::size_t N>
-std::array<T, N> operator-(const std::array<T, N>& a) noexcept
-{
-    std::array<T, N> ret;
-    for (std::size_t i = 0; i < N; i++) {
-        ret.at(i) = -a.at(i);
-    }
-    return ret;
-}
