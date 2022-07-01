@@ -2,27 +2,25 @@
 #include <geometry_msgs/PoseStamped.h>
 #include "omni_msgs/OmniFeedback.h"
 
+#include <vector>
+#include <array>
+#include <boost/shared_ptr.hpp>
+
 #include "bilateral.hpp"
-
-double BilateralController::positionController(
-    double ref, double x, double k)
-
-{
-    return k * (ref - x);  // TODO: ディジタル制御器かく
-}
-
 
 void BilateralController::forceControl()
 {
     geometry_msgs::Point master_pos = this->getMasterPose().position;
     geometry_msgs::Point slave_pos = this->getSlavePose().position;
-    std::vector<double> params = this->getParams();
+    std::vector<double> ktheta = this->getPosGains();
     omni_msgs::OmniFeedback force_msg;
-    // phantomの場合、forceをかける方向はencの向きと逆
+    // phantomの場合、forceをかける方向はencの向きと逆 -> kthetaはマイナス
     // A0Bにおいては各軸について符号あわせる
-    force_msg.force.x = this->positionController(slave_pos.x, master_pos.x, params.at(0));
-    force_msg.force.y = this->positionController(slave_pos.y, master_pos.y, params.at(1));
-    force_msg.force.z = this->positionController(slave_pos.z, master_pos.z, params.at(2));
+    // slaveをmasterにあわせる -> ref: slave, th: master
+    std::array<double, 3> tauref = this->positionIIRController(slave_pos, master_pos, ktheta);
+    force_msg.force.x = tauref.at(0);
+    force_msg.force.y = tauref.at(1);
+    force_msg.force.z = tauref.at(2);
     force_msg.position.x = 0.0;
     force_msg.position.y = 0.0;
     force_msg.position.z = 0.0;
@@ -33,6 +31,21 @@ void BilateralController::forceControl()
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "bilateral_master");
+
+    ros::NodeHandle nh;
+    // slaveのomni_stateが立ち上がるまで待つ
+    geometry_msgs::PoseStampedConstPtr ptr_s = ros::topic::waitForMessage<geometry_msgs::PoseStamped>("/phantom_slave/phantom/pose", nh, ros::Duration(1.0));
+    if (ptr_s == nullptr) {
+        ROS_ERROR("DID NOT RECEIVE SLAVE TOPIC");
+        return EXIT_FAILURE;
+    }
+    // masterのomni_stateが立ち上がるまで待つ
+    geometry_msgs::PoseStampedConstPtr ptr_m = ros::topic::waitForMessage<geometry_msgs::PoseStamped>("/phantom_master/phantom/pose", nh, ros::Duration(1.0));
+    if (ptr_m == nullptr) {
+        ROS_ERROR("DID NOT RECEIVE MASTER TOPIC");
+        return EXIT_FAILURE;
+    }
+
     ROS_INFO("Start bilateral master node ...");
     BilateralController bilateral_controller(BilateralController::MS::Master);
     ros::spin();

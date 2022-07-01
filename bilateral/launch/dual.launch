@@ -18,7 +18,7 @@
       <param name="units" value="$(arg units)"/>
     </node>
     <node name="master" pkg="bilateral" type="bilateral_master" output="screen">
-      <rosparam>ktheta_list: [-10.0,-10.0,-10.0]</rosparam>
+      <rosparam>ktheta_list: [-1.0,-2.0,-2.0]</rosparam>
     </node>
   </group>
 
@@ -31,7 +31,7 @@
       <param name="units" value="$(arg units)"/>
     </node>
     <node name="slave" pkg="bilateral" type="bilateral_slave" output="screen">
-      <rosparam>ktheta_list: [-10.0,-10.0,-10.0]</rosparam>
+      <rosparam>ktheta_list: [-1.0,-2.0,-2.0]</rosparam>
     </node>
   </group>
 
