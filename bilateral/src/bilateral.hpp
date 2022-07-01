@@ -46,18 +46,18 @@ private:
         const double a0 = 157.8;
         const double a1 = -157.7;
         const double b1 = 0.9704;
-        std::array<double, 3> diff;  // theta_input_diff
+        std::array<double, 3> pos_feedback_diff;  // theta_input_diff
         // x, y, zでしかaccessできないので仕方なく...
-        diff.at(0) = master.x - this->m_position_scale_gain.at(0) * slave.x;
-        diff.at(1) = master.y - this->m_position_scale_gain.at(1) * slave.y;
-        diff.at(2) = master.z - this->m_position_scale_gain.at(2) * slave.z;
+        pos_feedback_diff.at(0) = master.x - this->m_position_scale_gain.at(0) * slave.x;
+        pos_feedback_diff.at(1) = master.y - this->m_position_scale_gain.at(1) * slave.y;
+        pos_feedback_diff.at(2) = master.z - this->m_position_scale_gain.at(2) * slave.z;
         std::array<double, 3> ret;
         for (int i = 0; i < 3; i++) {
-            ret.at(i) = joint_gain.at(i) * (a0 * diff.at(i) + a1 * m_th_pi.at(i))  // m_th_pi: prev_input
-                        + b1 * m_th_po.at(i);                                      //m_th_po: prev_output
+            ret.at(i) = joint_gain.at(i) * (a0 * pos_feedback_diff.at(i) + a1 * m_th_pi.at(i))  // m_th_pi: prev_input
+                        + b1 * m_th_po.at(i);                                                   //m_th_po: prev_output
             // update variables
             m_th_po.at(i) = ret.at(i);
-            m_th_pi.at(i) = diff.at(i);
+            m_th_pi.at(i) = pos_feedback_diff.at(i);
         }
         return ret;
     }
@@ -69,9 +69,9 @@ private:
         static int cnt = 0;
         constexpr double theta_threshold = 0.05;
         constexpr int time_threshold_ms = 100;
-        const double diff = master.x - this->m_position_scale_gain.at(0) * slave.x;
-        ROS_INFO("diff: %lf", diff);
-        if (std::abs(diff) > theta_threshold) {
+        const double pos_feedback_diff = master.x - this->m_position_scale_gain.at(0) * slave.x;
+        ROS_INFO("pos_feedback_diff: %lf", pos_feedback_diff);
+        if (std::abs(pos_feedback_diff) > theta_threshold) {
             cnt++;
         } else {
             cnt = 0;
@@ -80,7 +80,7 @@ private:
 
         const double f = 1.;
         if (cnt > time_threshold_ms) {
-            return std::array<double, 3>{(diff > 0.0 ? -1.0 : 1.0) * f, 0.0, 0.0};
+            return std::array<double, 3>{(pos_feedback_diff > 0.0 ? -1.0 : 1.0) * f, 0.0, 0.0};
         } else {
             return std::array<double, 3>{0.0, 0.0, 0.0};
         }
