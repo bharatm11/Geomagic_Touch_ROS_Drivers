@@ -60,32 +60,24 @@ private:
         return ret;
     }
 
-    // IIR (大嘘)
+    // TODO: 今はとりあえず定数だが、モータパラメータを使ってDOB、RFOBを構成する
     std::array<double, 3> forceIIRController(
         geometry_msgs::Point& master, geometry_msgs::Point& slave)  //, std::vector<double>& k)
     {
-        static int p_cnt = 0;
-        static int m_cnt = 0;
+        static int cnt = 0;
         const double theta_threshold = 0.05;
         const int time_threshold_ms = 100;
-        ROS_DEBUG("diff: %lf", master.x - slave.x);
-        if (master.x - slave.x > theta_threshold) {
-            p_cnt++;
-            m_cnt = 0;
-        } else if (master.x - slave.x < -theta_threshold) {
-            p_cnt = 0;
-            m_cnt++;
+        ROS_INFO("diff: %lf", master.x - slave.x);
+        if (std::abs(master.x - slave.x) > theta_threshold) {
+            cnt++;
         } else {
-            p_cnt = 0;
-            m_cnt = 0;
+            cnt = 0;
         }
-        ROS_DEBUG("p: %d, m: %d", p_cnt, m_cnt);
+        ROS_INFO("cnt: %d", cnt);
 
         const double f = 1.;
-        if (p_cnt > time_threshold_ms) {
-            return std::array<double, 3>{f, 0.0, 0.0};
-        } else if (m_cnt > time_threshold_ms) {
-            return std::array<double, 3>{-f, 0.0, 0.0};
+        if (cnt > time_threshold_ms) {
+            return std::array<double, 3>{(master.x - slave.x > 0.0 ? 1.0 : -1.0) * f, 0.0, 0.0};
         } else {
             return std::array<double, 3>{0.0, 0.0, 0.0};
         }
