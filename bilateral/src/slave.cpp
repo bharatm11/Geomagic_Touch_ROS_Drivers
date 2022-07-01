@@ -1,10 +1,10 @@
+#include <array>
+#include <boost/shared_ptr.hpp>
+#include <vector>
+
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
 #include "omni_msgs/OmniFeedback.h"
-
-#include <array>
-#include <vector>
-#include <boost/shared_ptr.hpp>
 
 #include "bilateral.hpp"
 

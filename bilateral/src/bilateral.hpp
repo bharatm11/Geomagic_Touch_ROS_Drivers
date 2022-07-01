@@ -1,13 +1,12 @@
 #pragma once
 
-#include <ros/ros.h>
-#include <geometry_msgs/PoseStamped.h>
-#include "omni_msgs/OmniFeedback.h"
-
 #include <array>
 #include <vector>
 #include <string>
 
+#include <ros/ros.h>
+#include <geometry_msgs/PoseStamped.h>
+#include "omni_msgs/OmniFeedback.h"
 
 class BilateralController
 {
