@@ -8,7 +8,7 @@
   <arg name="device_name_slave" default="slave_device"/>
   <param name="topic_master" value="/$(arg omni_name_master)/phantom"/>
   <param name="topic_slave" value="/$(arg omni_name_slave)/phantom"/>
-  <rosparam>position_scale_gain: [0.3,0.3,0.3]</rosparam>
+  <rosparam>position_scale_gain: [2.0,2.0,2.0]</rosparam>
   <rosparam>force_scale_gain: [1.0,1.0,1.0]</rosparam>
 
   <group ns="$(arg omni_name_master)">
