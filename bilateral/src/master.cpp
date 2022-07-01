@@ -29,21 +29,30 @@ void BilateralController::forceControl()
     m_pub.publish(force_msg);
 }
 
+template <typename T>
+static bool waitForMyMsg(const std::string& topic_name, ros::NodeHandle& nh)
+{
+    boost::shared_ptr<const T> ptr = ros::topic::waitForMessage<T>(topic_name, nh, ros::Duration(1.0));
+    if (ptr == nullptr) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "bilateral_master");
-
     ros::NodeHandle nh;
+
     // slaveのomni_stateが立ち上がるまで待つ
-    geometry_msgs::PoseStampedConstPtr ptr_s = ros::topic::waitForMessage<geometry_msgs::PoseStamped>("/phantom_slave/phantom/pose", nh, ros::Duration(1.0));
-    if (ptr_s == nullptr) {
+    if (!waitForMyMsg<geometry_msgs::PoseStamped>("/phantom_slave/phantom/pose", nh)) {
         ROS_ERROR("DID NOT RECEIVE SLAVE TOPIC");
         return EXIT_FAILURE;
     }
     // masterのomni_stateが立ち上がるまで待つ
-    geometry_msgs::PoseStampedConstPtr ptr_m = ros::topic::waitForMessage<geometry_msgs::PoseStamped>("/phantom_master/phantom/pose", nh, ros::Duration(1.0));
-    if (ptr_m == nullptr) {
+    if (!waitForMyMsg<geometry_msgs::PoseStamped>("/phantom_master/phantom/pose", nh)) {
         ROS_ERROR("DID NOT RECEIVE MASTER TOPIC");
         return EXIT_FAILURE;
     }
