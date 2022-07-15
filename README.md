@@ -19,7 +19,8 @@ sudo apt-get install --no-install-recommends freeglut3-dev g++ libdrm-dev libexp
 
 2. Download and Extract OpenHaptics and Haptic Device drivers
 
-Download drivers using instructions at: https://3dsystems.teamplatform.com/pages/102863?t=fptvcy2zbkcc
+Download drivers using instructions at: https://3dsystems.teamplatform.com/pages/102863?t=fptvcy2zbkcc  
+If you cannot access that page, use `Old device drivers` on the bottom of this README
 
 3. Install Openhaptics
 
