@@ -1,15 +1,11 @@
 3D Systems Geomagic Touch ROS Driver
 ============
 
-**This branch supports connection with dual phanton devices - beta phase.**
-
-ROS Packages for 3D Systems Geomagic Touch haptic device, **USB** version.
+ROS Packages for connection with upto 2 3D Systems Geomagic Touch (previously known as Phantom Omni) haptic devices, **USB** version.
 
 This repository has been forked from the original repository by Francisco Suárez Ruiz, [http://fsuarez6.github.io](http://fsuarez6.github.io) for the Sensable PHANToM haptic device (https://github.com/fsuarez6/phantom_omni).
 
 ROS packages developed by the [Group of Robots and Intelligent Machines](http://www.romin.upm.es/) from the [Universidad Politécnica de Madrid](http://www.upm.es/internacional). This group is part of the [Centre for Automation and Robotics](http://www.car.upm-csic.es/) (CAR UPM-CSIC). 
-
-The branch _dual-phantom-beta_ supports connection with dual phantom devices. This branch is in beta phase and is not fully tested.
 
 ## Installation
 
@@ -86,8 +82,7 @@ Data from the haptic device can be read from the following topics:
 
 ## Use Multiple Devices
 
-You can use multiple devices by adding a unique name to each device.
-You have to do the following setting every time you reconnected the device:
+Multiple devices can be connected by adding a unique name to each device. **Following settings need to be made every time the devices are reconnected**:
 
 1. Run Geomagic_Touch_Setup in /opt/geomagic_touch_device_driver/
 
@@ -99,7 +94,7 @@ You have to do the following setting every time you reconnected the device:
 
 5. Press `Apply`
 
-Sample using two devices (`Left Device` and `Right Device`):
+Example to run two devices (`Left Device` and `Right Device`):
 ```
 roslaunch omni_common dual_phantom.launch
 ```
