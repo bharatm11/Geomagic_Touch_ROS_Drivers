@@ -1,7 +1,7 @@
 3D Systems Geomagic Touch ROS Driver
 ============
 
-ROS Packages for connection *one* or *more* 3D Systems Geomagic Touch (previously known as Phantom Omni) haptic devices, **USB** version.
+ROS Packages for connecting *one* or *more* 3D Systems Geomagic Touch (previously known as Phantom Omni) haptic devices, **USB** version.
 
 This repository has been forked from the original repository by Francisco Suárez Ruiz, [http://fsuarez6.github.io](http://fsuarez6.github.io) for the Sensable PHANToM haptic device (https://github.com/fsuarez6/phantom_omni).
 
