@@ -111,5 +111,31 @@ http://dsc.sensable.com/viewtopic.php?t=5730&sid=9866fe798e24bc745fdb7fce08ee99e
 
 **Old device drivers** https://drive.google.com/drive/folders/1WJY6HpdtGh5zeyASfb4FYJFFG-QGItd6?usp=sharing
 
+## Citation
+
+Please cite these papers in your publications if this repository helps your research.
+
+```
+@INPROCEEDINGS{8941790,
+  author={Mathur, Bharat and Topiwala, Anirudh and Schaffer, Saul and Kam, Michael and Saeidi, Hamed and Fleiter, Thorsten and Krieger, Axel},
+  booktitle={2019 IEEE 19th International Conference on Bioinformatics and Bioengineering (BIBE)}, 
+  title={A Semi-Autonomous Robotic System for Remote Trauma Assessment}, 
+  year={2019},
+  volume={},
+  number={},
+  pages={649-656},
+  doi={10.1109/BIBE.2019.00122}}
+  
+@inbook{doi:10.1137/1.9781611975758.2,
+author = {B. Mathur and A. Topiwala and H. Saeidi and T. Fleiter and A. Krieger},
+title = {Evaluation of Control Strategies for a Tele-manipulated Robotic System for Remote Trauma Assessment},
+booktitle = {2019 Proceedings of the Conference on Control and its Applications (CT)},
+chapter = {},
+pages = {7-14},
+doi = {10.1137/1.9781611975758.2},
+URL = {https://epubs.siam.org/doi/abs/10.1137/1.9781611975758.2},
+eprint = {https://epubs.siam.org/doi/pdf/10.1137/1.9781611975758.2}}
+```
+
 
 
