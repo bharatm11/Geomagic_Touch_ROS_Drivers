@@ -1,0 +1,26 @@
+<launch>
+  <arg name="reference_frame" default="/map"/>
+  <arg name="units" default="mm"/>
+  <arg name="publish_rate" default="1000"/>
+
+  <group ns="left_device">
+    <node name="omni_state" pkg="omni_common" type="omni_state" output="screen">
+      <param name="device_name" value="Left Device"/>
+      <param name="omni_name" value="phantom"/>
+      <param name="publish_rate" value="$(arg publish_rate)"/>
+      <param name="reference_frame" value="$(arg reference_frame)"/>
+      <param name="units" value="$(arg units)"/>
+    </node>
+  </group>
+
+  <group ns="right_device">
+    <node name="omni_state" pkg="omni_common" type="omni_state" output="screen">
+      <param name="device_name" value="Right Device"/>
+      <param name="omni_name" value="phantom"/>
+      <param name="publish_rate" value="$(arg publish_rate)"/>
+      <param name="reference_frame" value="$(arg reference_frame)"/>
+      <param name="units" value="$(arg units)"/>
+    </node>
+  </group>
+
+</launch>

@@ -363,17 +363,29 @@ void *ros_publish(void *ptr) {
 
 int main(int argc, char** argv) {
   ////////////////////////////////////////////////////////////////
+  // Init ROS
+  ////////////////////////////////////////////////////////////////
+  ros::init(argc, argv, "omni_haptic_node");
+  OmniState state;
+  PhantomROS omni_ros;
+
+  ////////////////////////////////////////////////////////////////
   // Init Phantom
   ////////////////////////////////////////////////////////////////
   HDErrorInfo error;
   HHD hHD;
-  hHD = hdInitDevice(HD_DEFAULT_DEVICE);
+  // HDstring target_dev = HD_DEFAULT_DEVICE;
+  // string dev_string;
+  ros::NodeHandle nh("~");
+  std::string device_name;
+  nh.getParam("device_name", device_name);
+  HDstring target_dev = device_name.c_str();
+  hHD = hdInitDevice(target_dev);
   if (HD_DEVICE_ERROR(error = hdGetError())) {
     //hduPrintError(stderr, &error, "Failed to initialize haptic device");
     ROS_ERROR("Failed to initialize haptic device"); //: %s", &error);
     return -1;
   }
-
   ROS_INFO("Found %s.", hdGetString(HD_DEVICE_MODEL_TYPE));
   hdEnable(HD_FORCE_OUTPUT);
   hdStartScheduler();
@@ -383,17 +395,11 @@ int main(int argc, char** argv) {
   }
   HHD_Auto_Calibration();
 
-  ////////////////////////////////////////////////////////////////
-  // Init ROS
-  ////////////////////////////////////////////////////////////////
-  ros::init(argc, argv, "omni_haptic_node");
-  OmniState state;
-  PhantomROS omni_ros;
-
   omni_ros.init(&state);
   hdScheduleAsynchronous(omni_state_callback, &state,
       HD_MAX_SCHEDULER_PRIORITY);
 
+  
   ////////////////////////////////////////////////////////////////
   // Loop and publish
   ////////////////////////////////////////////////////////////////

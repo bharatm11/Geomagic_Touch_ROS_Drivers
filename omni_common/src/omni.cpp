@@ -25,6 +25,7 @@
 float prev_time;
 int calibrationStyle;
 #define DEVICE_NAME "Default PHANTOM"
+// #define DEVICE_NAME "R"
 struct OmniState {
   hduVector3Dd position;  //3x1 vector of position
   hduVector3Dd velocity;  //3x1 vector of velocity
