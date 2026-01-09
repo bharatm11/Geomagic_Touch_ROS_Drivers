@@ -1,7 +1,9 @@
 3D Systems Geomagic Touch ROS Driver
 ============
 
-ROS Packages for connecting *one* or *more* 3D Systems Geomagic Touch (previously known as Phantom Omni) haptic devices, **USB** version.
+ROS Packages for connecting *one* or *more* 3D Systems Geomagic Touch (previously known as Phantom Omni) haptic devices, **USB** & **HID** versions.
+
+For **HID Devices**, please read this [issue](https://github.com/bharatm11/Geomagic_Touch_ROS_Drivers/issues/17#issue-3540716107) and follow the guide below.
 
 This repository has been forked from the original repository by Francisco Suárez Ruiz, [http://fsuarez6.github.io](http://fsuarez6.github.io) for the Sensable PHANToM haptic device (https://github.com/fsuarez6/phantom_omni).
 
@@ -21,6 +23,9 @@ sudo apt-get install --no-install-recommends freeglut3-dev g++ libdrm-dev libexp
 
    Download drivers using instructions at: https://3dsystems.teamplatform.com/pages/102863?t=fptvcy2zbkcc  
    If you cannot access that page, use `Old device drivers` on the bottom of this README
+
+   For **HID Devices**, download drivers from: https://support.3dsystems.com/s/article/OpenHaptics-for-Linux-Developer-Edition-v34?language=en_US
+
 
    2. Install Openhaptics
 
@@ -46,11 +51,11 @@ sudo apt-get install --no-install-recommends freeglut3-dev g++ libdrm-dev libexp
    sudo ln -s /usr/lib64/libHL.so.3.0.0 /usr/lib/libHL.so.3.0 
    ```
 
-3. On Ubuntu 18.04+:  
+4. On Ubuntu 18.04+:  
    Download and Install OpenHaptics and Haptic Device drivers using instructions at: https://support.3dsystems.com/s/article/OpenHaptics-for-Linux-Developer-Edition-v34?language=en_US  
    If your Ubuntu version is not supported, use `Old device drivers` on the bottom of this README
 
-4. Device setup
+5. Device setup
 
 The haptic device always creates a COM Port as /dev/ttyACM0 and requires admin priviliges
 ```
@@ -60,6 +65,8 @@ On Ubuntu 14.04, run Geomagic_Touch_Setup in /opt/geomagic_touch_device_driver/
 On Ubuntu 18.04+, run Touch_Setup
 
 Ensure that the device serial number is displayed 
+
+For **HID** Devices, use ```/dev/hid-raw``` or ```/dev/hid ``` instead of ```/dev/ttyACM```
 
 5. Device Diagnostics
 
